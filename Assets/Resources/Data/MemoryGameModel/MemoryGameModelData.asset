@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416d481cdf764001aa8c1ffbe2c5ef06, type: 3}
+  m_Name: MemoryGameModelData
+  m_EditorClassIdentifier: 
+  cardDisplayTime: 0.2
+  rounds:
+  - numberOfCardPairs: 1
+    type: 0
+    SpriteAtlas: {fileID: 4343727234628468602, guid: 8bc9df657dd9e614ebd381eba583a7a6,
+      type: 2}
+  - numberOfCardPairs: 1
+    type: 1
+    SpriteAtlas: {fileID: 4343727234628468602, guid: ffeecdf7974e92b4ca17fe42e51b6ae1,
+      type: 2}
+  - numberOfCardPairs: 2
+    type: 2
+    SpriteAtlas: {fileID: 4343727234628468602, guid: c10a7e3a8caad2e419e8d8104962d3b8,
+      type: 2}
+  - numberOfCardPairs: 2
+    type: 3
+    SpriteAtlas: {fileID: 4343727234628468602, guid: 21651836e4263a24291daaedb0dcea00,
+      type: 2}
+  - numberOfCardPairs: 3
+    type: 4
+    SpriteAtlas: {fileID: 4343727234628468602, guid: 2b552b2259d367e47a0fba0c11b75001,
+      type: 2}
+  helpCount: 0
