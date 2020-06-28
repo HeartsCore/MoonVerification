@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Core.Customs;
 using Moon.Asyncs.Internal.Commands;
 using UnityEngine;
 
@@ -53,7 +54,7 @@ namespace Moon.Asyncs.Internal
 
                 if (updateResult == AsyncCommandResult.Exception)
                 {
-                    Debug.Log($"Cain '{chain.id}' finished terminated with exception");
+                    CustomDebug.Log($"Cain '{chain.id}' finished terminated with exception");
                 }
 
                 if (!chain.isComplete && updateResult == AsyncCommandResult.Ok) continue;

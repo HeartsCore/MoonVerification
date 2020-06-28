@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15924ec9448f03d41a08e4d8c749e9d9, type: 3}
   m_Name: CardData
   m_EditorClassIdentifier: 
-  _releaseTime: 0.15
-  _maxDistance: 2
+  _cardDisplayTime: 0.2
+  _cardPrefab: {fileID: 8193626224030353831, guid: 33a30d766ae32854e804c54e1aa4e5ac,
+    type: 3}
+  _countFlipCardATime: 2
+  _cardShuffl: {fileID: 4535963251488990345, guid: dc5dfe9aadd86b24296a0f9b23dba6e1,
+    type: 3}
   CardBehaviour: {fileID: 0}

@@ -1,6 +1,7 @@
 ﻿using Moon.Asyncs;
 using UnityEngine;
 
+
 namespace MiniGames.Common
 {
     public abstract class GameScenarioBase: MonoBehaviour

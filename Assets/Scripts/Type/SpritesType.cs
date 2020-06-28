@@ -1,4 +1,4 @@
-﻿public enum SpritesType
+﻿public enum CardType
 {
     Animals,
     Clothes,

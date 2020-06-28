@@ -1,16 +1,38 @@
-﻿using MiniGames.Common;
+﻿using Core;
+using Core.Customs;
+using MiniGames.Common;
 using Moon.Asyncs;
 using UnityEngine;
+
 
 namespace MiniGames.Memory
 {
     public class MemoryScenario : GameScenarioBase
     {
-        public MemoryGameController controller;
-
+        #region PrivateData
+        private MemoryGameController _memoryGameController;
         //TODO: select gameModel with difficulty controller class
-        public MemoryGameModel defaultGameModel;
+        private DifficultyController _difficultyController;
 
+        private MemoryGameModel _gameModelSO;
+        private CardData _cardData;
+        private float _timeOutForSpawnCardAfterCameraAnimation = 8.2f;
+        #endregion
+
+
+        #region Unity Methods
+        private void Awake()
+        {
+            _memoryGameController = GetComponentInParent<MemoryGameController>();
+            _difficultyController = _memoryGameController._difficultyController;
+            _gameModelSO = Data.Instance.MemoryGameModel;
+            _cardData = _gameModelSO.GetCardData();
+
+        }
+        #endregion
+
+
+        #region MoonAsync Methods
         protected override AsyncState OnExecute()
         {
             return Planner.Chain()
@@ -23,27 +45,34 @@ namespace MiniGames.Memory
         private AsyncState Intro()
         {
             return Planner.Chain()
-                    // TODO: intro cut scene. Run camera animation. Await animation finish
-                    .AddAction(Debug.Log, "start intro")
-                    .AddTimeout(1f)
-                    .AddAction(Debug.Log, "intro finished")
+                    .AddAction(CustomDebug.Log, "start intro")
+                    .AddFunc(_memoryGameController.CameraAnimationController.StartCutScene)
+                    .AddTimeout(_timeOutForSpawnCardAfterCameraAnimation)
+                    .AddAction(CustomDebug.Log, "intro finished")
                 ;
         }
 
+        
         private AsyncState GameCircle()
         {
             var asyncChain = Planner.Chain();
             asyncChain.AddAction(Debug.Log, "game started");
             // TODO: implement game circle using game controller
             // TODO: move hardcoded "5" count to game config
-            for (var i = 0; i < 5; i++)
+            asyncChain.AddFunc(progress.ShowProgressBar);
+            asyncChain.AddAction(() => progress.NumberOfRounds = _gameModelSO.numberOfRounds);
+
+            for (var i = 0; i < _gameModelSO.numberOfRounds; i++)
             {
                 asyncChain
-                        .AddFunc(controller.RunGame, defaultGameModel)
+                        .AddAction(_gameModelSO.SetDifficultyController, _difficultyController)
+                        .AddAction(() => _gameModelSO.GetController().HandleHP())
+                        .AddFunc(_memoryGameController.RunGame, _gameModelSO)
                         .AddFunc(progress.IncrementProgress)
                     ;
             }
 
+            asyncChain.AddFunc(progress.CloseProgressBar);
             asyncChain.AddAction(Debug.Log, "game finished");
             return asyncChain;
         }
@@ -52,11 +81,12 @@ namespace MiniGames.Memory
         {
             // TODO: outro cut scene. Run camera back to origin position. Await animation finish
             return Planner.Chain()
-                    .AddAction(Debug.Log, "start outro")
+                    .AddAction(CustomDebug.Log, "start outro")
+                    .AddFunc(_memoryGameController.CameraAnimationController.RewardCutScene)
                     .AddTimeout(1f)
-                    .AddAction(Debug.Log, "outro finished")
+                    .AddAction(CustomDebug.Log, "outro finished")
                 ;
         }
-
+        #endregion
     }
 }
