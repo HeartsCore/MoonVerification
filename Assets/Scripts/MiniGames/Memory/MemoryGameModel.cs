@@ -61,9 +61,10 @@ namespace MiniGames.Memory
         public class RoundParams
         {
             #region PrivateData
-            [SerializeField] private int _numberOfCardPairs;
+            //[SerializeField] private int _numberOfCardPairs;
+            //[SerializeField] private SpriteAtlas _spriteAtlas;
+
             [SerializeField] private CardType _type = CardType.Animals;
-            [SerializeField] private SpriteAtlas _spriteAtlas;
             [SerializeField] private Image _images;
             #endregion
         }

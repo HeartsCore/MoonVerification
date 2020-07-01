@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "_\u0441ardDataSO": {fileID: 11400000, guid: 7b827b70fc77d68449a3681ec49f3260, type: 2}
   _rounds:
-  - _numberOfCardPairs: 1
+  - _numberOfCardPairs: 3
     _type: 0
     _spriteAtlas: {fileID: 4343727234628468602, guid: 8bc9df657dd9e614ebd381eba583a7a6,
       type: 2}

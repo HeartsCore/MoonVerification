@@ -7,10 +7,9 @@ using UnityEngine;
 public class TutorialHandBehaviour : MonoBehaviour
 {
     #region  PrivateData
-    [SerializeField] private GameObject hand;
-    [SerializeField] private Camera uICamera;
-    private CardBehaviour targetCard;
-    private Vector3 offset = Vector3.zero;
+    [SerializeField] private GameObject _hand;
+    [SerializeField] private Camera _uICamera;
+    private CardBehaviour _targetCard;
     private Canvas canvas;
     #endregion
 
@@ -29,6 +28,7 @@ public class TutorialHandBehaviour : MonoBehaviour
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
+        
     }
     private void OnDisable()
     {
@@ -46,8 +46,8 @@ public class TutorialHandBehaviour : MonoBehaviour
 
         asyncChain
                 .AddAction(gameObject.SetActive, true)
-                .AddAction(() => targetCard = FindObjectOfType<CardBehaviour>())
-                .AddAwait((AsyncStateInfo state) => state.IsComplete = targetCard != null)
+                .AddAction(() => _targetCard = FindObjectOfType<CardBehaviour>())
+                .AddAwait((AsyncStateInfo state) => state.IsComplete = _targetCard != null)
                 .AddFunc(MoveHand)
                 .AddAction(() => PlayerPrefs.SetInt("IsFirstStart", 1))
             ;
@@ -66,8 +66,8 @@ public class TutorialHandBehaviour : MonoBehaviour
     #region DoTween  Methods
     private Tween MoveTo()
     {
-        var position = WorldToUISpace(canvas, targetCard.transform.position);
-        return hand.GetComponent<RectTransform>().DOMove(position, 1f);
+        var position = WorldToUISpace(canvas, _targetCard.transform.position);
+        return _hand.GetComponent<RectTransform>().DOMove(position, 1f);
     }
     #endregion
 
@@ -76,7 +76,7 @@ public class TutorialHandBehaviour : MonoBehaviour
     public Vector3 WorldToUISpace(Canvas parentCanvas, Vector3 worldPos)
     {
         worldPos -= Vector3.one * 1.5f; //...
-        Vector3 screenPos = uICamera.WorldToScreenPoint(worldPos);
+        Vector3 screenPos = _uICamera.WorldToScreenPoint(worldPos);
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, parentCanvas.worldCamera, out Vector2 movePos);
         return parentCanvas.transform.TransformPoint(movePos);

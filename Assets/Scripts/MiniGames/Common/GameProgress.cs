@@ -9,7 +9,11 @@ namespace MiniGames.Common
     public class GameProgress : MonoBehaviour
     {
         #region PrivateData
+        private DifficultyData _difficultyData;
+        private HPManagerBehavior _hpManager;
         private ProgressBar _progressBar;
+        private GameMenuBehaviour _gameMenu;
+        private Canvas _canvas;
         #endregion
 
 
@@ -21,10 +25,14 @@ namespace MiniGames.Common
         #region Unity Methods
         private void Awake()
         {
+            _difficultyData = Data.Instance.DifficultyData;
+            _canvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
+            _gameMenu = _canvas.GetComponentInChildren<GameMenuBehaviour>(); //GameObject.FindGameObjectWithTag("MainCanvas").
+            _hpManager = _canvas.GetComponentInChildren<HPManagerBehavior>();
             var progressBarBehaviour = CustomResources.Load<ProgressBar>
                             (AssetsPathGameObject.GameObjects[GameObjectType.ProgressBar]);
 
-            _progressBar = Instantiate(progressBarBehaviour);
+            _progressBar = Instantiate(progressBarBehaviour, _gameMenu.transform);
             
         }
         #endregion
@@ -60,6 +68,16 @@ namespace MiniGames.Common
         public void ResetProgress(int count)
         {
             // TODO: reset progress to zero. Set progress max
+        }
+
+        public AsyncState HandleHP()
+        {
+            var asyncChain = Planner.Chain();
+            if (!_difficultyData.IsHPHandle)
+                return asyncChain.AddEmpty();
+
+            asyncChain.AddFunc(_hpManager.Execute, _difficultyData.HpPrefab, _difficultyData.MaxHP);
+            return asyncChain;
         }
         #endregion
     }

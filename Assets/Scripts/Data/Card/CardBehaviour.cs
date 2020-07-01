@@ -1,6 +1,7 @@
 ﻿using Core;
 using DG.Tweening;
 using Moon.Asyncs;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ public class CardBehaviour : MonoBehaviour
     
     private bool _isFliped;
     private CardData _cardData;
-    private List<CardBehaviour> _flipedCards;
-
+    
     private int _dataCountFlipCardATime;
     #endregion
+    public Action<CardBehaviour> OnFlipedCard;
 
 
     #region Properties
@@ -29,18 +30,17 @@ public class CardBehaviour : MonoBehaviour
     private void OnEnable()
     {
         _isFliped = false;
-        CardDealerController.OnFlipedCard += AddToFlipedList;
+        OnFlipedCard += AddToFlipedList;
     }
     private void OnDisable()
     {
-        CardDealerController.OnFlipedCard -= AddToFlipedList;
+        OnFlipedCard -= AddToFlipedList;
     }
 
     private void Awake()
     {
         _cardData = Data.Instance.Card;
         _dataCountFlipCardATime = _cardData.GetСountFlipCardATime();
-        _flipedCards = _cardData.GetFlipedCards();
         faceImage = transform.GetChild(0).GetComponent<MeshRenderer>();
         
     }
@@ -64,10 +64,10 @@ public class CardBehaviour : MonoBehaviour
 
         CardDealerController.IsHandleFlipCards = true;
         var matches = new Dictionary<CardBehaviour, List<CardBehaviour>>();
-        foreach (var fCard in _flipedCards)
+        foreach (var fCard in CardDealerController.FlipedCards)
         {
             if (!matches.ContainsKey(fCard))
-                matches.Add(fCard, _flipedCards.FindAll(c => c.Equals(fCard)));
+                matches.Add(fCard, CardDealerController.FlipedCards.FindAll(c => c.Equals(fCard)));
         }
 
         var isMatch = false;
@@ -78,7 +78,6 @@ public class CardBehaviour : MonoBehaviour
                 isMatch = true;
                 mCard.ForEach((CardBehaviour card)
                     => asyncChain
-                            .JoinTween(card.Shake)
                             .JoinTween(card.MoveTo, new Vector3(0f, 2.86f, 10f))
                             .JoinFunc(card.SetActiveGameObject, false)
                       );
@@ -95,7 +94,7 @@ public class CardBehaviour : MonoBehaviour
 
         if (!isMatch)
         {
-            asyncChain.AddAction(() => HPManager.onDecrease?.Invoke());
+            asyncChain.AddAction(() => HPManagerBehavior.OnTakingLives?.Invoke());
             asyncChain.AddAction(() => CardShufflingController.onErrorCard?.Invoke());
         }
 
@@ -127,7 +126,7 @@ public class CardBehaviour : MonoBehaviour
         });
 
         asyncChain.AddAwait((AsyncStateInfo state) => state.IsComplete = !IsTweenRunning);
-        asyncChain.AddAction(_flipedCards.Clear);
+        asyncChain.AddAction(CardDealerController.FlipedCards.Clear);
         asyncChain.onComplete += () => CardDealerController.IsHandleFlipCards = false;
     }
     public AsyncState MoveToTable(Vector3 movePosition)
@@ -152,7 +151,7 @@ public class CardBehaviour : MonoBehaviour
             .AddTween(Rise)
             .AddTween(Rotate)
             .AddTween(Put)
-            .AddAction(CardDealerController.OnFlipedCard.Invoke, this)
+            .AddAction(OnFlipedCard.Invoke, this)
         ;
     }
 
@@ -160,13 +159,15 @@ public class CardBehaviour : MonoBehaviour
 
 
     #region  Methods
+    
     public void AddToFlipedList(CardBehaviour card)
     {
-        _flipedCards.Add(card);
-        if (_flipedCards.Count == _dataCountFlipCardATime) ;
-        HandleFlipedCards();
+        CardDealerController.FlipedCards.Add(card);
+        if (CardDealerController.FlipedCards.Count == _dataCountFlipCardATime)
+            HandleFlipedCards();
+        
     }
-    
+
 
     public void SetImage(Texture2D image)
     {

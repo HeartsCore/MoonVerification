@@ -37,6 +37,13 @@ namespace Core
                     Screen = "GUI/Screen/GameMenu/GUI_Screen_GameMenu",
                     Elements = new Dictionary<ScreenElementType, string>()
                 }
+            },
+            {
+                ScreenType.RestartMenu, new ScreenPath
+                {
+                    Screen = "GUI/Screen/RestartMenu/GUI_Screen_RestartMenu",
+                    Elements = new Dictionary<ScreenElementType, string>()
+                }
             }
         };
 

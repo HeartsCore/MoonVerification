@@ -53,6 +53,10 @@ namespace Core
                 case ScreenType.MainMenu:
                     _currentWindow = _screenFactory.GetMainMenu();
                     break;
+                case ScreenType.RestartMenu:
+                    _currentWindow = _screenFactory.GetRestartMenu();
+                    break;
+
 
                 default:
                     break;
@@ -75,6 +79,12 @@ namespace Core
                     _screenFactory.GetMainMenu().HideUI += listenerScreen.HideScreen;
                     _screenFactory.GetMainMenu().Hide();
                     break;
+                case ScreenType.RestartMenu:
+                    _screenFactory.GetRestartMenu().ShowUI += listenerScreen.ShowScreen;
+                    _screenFactory.GetRestartMenu().HideUI += listenerScreen.HideScreen;
+                    _screenFactory.GetRestartMenu().Hide();
+                    break;
+
 
                 default:
                     break;
@@ -95,6 +105,12 @@ namespace Core
                     _screenFactory.GetMainMenu().HideUI -= listenerScreen.HideScreen;
                     _screenFactory.GetMainMenu().Hide();
                     break;
+                case ScreenType.RestartMenu:
+                    _screenFactory.GetRestartMenu().ShowUI -= listenerScreen.ShowScreen;
+                    _screenFactory.GetRestartMenu().HideUI -= listenerScreen.HideScreen;
+                    _screenFactory.GetRestartMenu().Hide();
+                    break;
+
 
                 default:
                     break;

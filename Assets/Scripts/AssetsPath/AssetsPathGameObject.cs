@@ -36,6 +36,10 @@ namespace Core
             {
                 GameObjectType.GameScenarioExecutor, "Prefabs/Controllers/Prefabs_GameScenarioExecutor"
             }
+            ,
+            {
+                GameObjectType.HPprefab, "Prefabs/HP/Prefabs_HP"
+            }
 
         };
 

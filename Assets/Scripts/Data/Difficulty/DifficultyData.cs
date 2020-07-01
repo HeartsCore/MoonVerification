@@ -1,40 +1,42 @@
 ﻿using Core;
 using Core.Customs;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "DifficultyData", menuName = "Data/DifficultyData")]
 public class DifficultyData : ScriptableObject
 {
     #region Fields
     [Header("Game Settigs")]
-    public bool isShowCardInBeginningRound = true;
-    public float showTime = 1.0f;
+    public bool IsShowCardInBeginningRound = true;
+    public float ShowTime = 1.0f;
 
     [Header("Error Settigs")]
-    public bool isShufflingCards = true;
-    public int maxCountErrors = 1;
-    public bool isCardWithoutPairs = true;
+    public bool IsShufflingCards = true;
+    public int MaxCountErrors = 1;
+    public bool IsCardWithoutPairs = true;
 
     [Header("HP Settigs")]
-    public HPManager HPManager;
-    public bool isHPHandle = true;
-    public int maxHP = 3;
-    public GameObject hpPrefab;
+    //public HPManagerBehavior HPManager;
+    public bool IsHPHandle = true;
+    public int MaxHP = 3;
+    public GameObject HpPrefab;
     #endregion
+
 
 
     #region Methods
     public void Initialization()
     {
-        if (HPManager == null)
-        {
-            var manager = CustomResources.Load<HPManager>
-                        (AssetsPathGameObject.GameObjects[GameObjectType.HPManager]);
-
-            HPManager = Instantiate(manager);
-        }
         
+        if (HpPrefab == null)
+        {
+            var manager = CustomResources.Load<GameObject>
+                        (AssetsPathGameObject.GameObjects[GameObjectType.HPprefab]);
+
+            HpPrefab = Instantiate(manager);
+        }
+
 
     }
     #endregion

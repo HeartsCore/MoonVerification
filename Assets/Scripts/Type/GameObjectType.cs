@@ -11,7 +11,8 @@
         ProgressBar = 6,
         ProgressBarEffect = 7,
         CardShufflingController = 8,
-        GameScenarioExecutor = 9
+        GameScenarioExecutor = 9,
+        HPprefab = 10
 
     }
 }

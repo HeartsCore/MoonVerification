@@ -10,6 +10,7 @@ namespace Core
 
         private GameMenuBehaviour _gameMenu;
         private MainMenuBehaviour _mainMenu;
+        private RestartMenuBehaviour _restartMenu;
         private Canvas _canvas;
 
         #endregion
@@ -47,6 +48,16 @@ namespace Core
             }
             return _mainMenu;
         }
+        public RestartMenuBehaviour GetRestartMenu()
+        {
+            if (_restartMenu == null)
+            {
+                var resources = CustomResources.Load<RestartMenuBehaviour>(AssetsPathScreen.Screens[ScreenType.MainMenu].Screen);
+                _restartMenu = Object.Instantiate(resources, _canvas.transform.position, Quaternion.identity, _canvas.transform);
+            }
+            return _restartMenu;
+        }
+
 
         #endregion
     }

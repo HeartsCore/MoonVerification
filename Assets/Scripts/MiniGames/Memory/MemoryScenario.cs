@@ -24,7 +24,7 @@ namespace MiniGames.Memory
         private void Awake()
         {
             _memoryGameController = GetComponentInParent<MemoryGameController>();
-            _difficultyController = _memoryGameController._difficultyController;
+            _difficultyController = _memoryGameController.DifficultyController;
             _gameModelSO = Data.Instance.MemoryGameModel;
             _cardData = _gameModelSO.GetCardData();
 
@@ -66,7 +66,7 @@ namespace MiniGames.Memory
             {
                 asyncChain
                         .AddAction(_gameModelSO.SetDifficultyController, _difficultyController)
-                        .AddAction(() => _gameModelSO.GetController().HandleHP())
+                        .AddAction(() => progress.HandleHP())
                         .AddFunc(_memoryGameController.RunGame, _gameModelSO)
                         .AddFunc(progress.IncrementProgress)
                     ;

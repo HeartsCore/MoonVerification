@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MiniGames.Memory;
+using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -6,27 +7,43 @@ namespace Core
 {
     public sealed class GameMenuBehaviour : BaseUi
     {
+        #region Private Data
+
+        private MemoryGameController _controller;
+        
+        
+        #endregion
+        
+        
         #region Fields
+
+        public Button GameMenuHelpButton;
         
-        [SerializeField] private Button _button;
-        
+
         #endregion
 
 
         #region UnityMethods
 
+        protected override void Awake()
+        {
+            _controller = GameObject.FindGameObjectWithTag("MemoryGameController").GetComponent<MemoryGameController>();
+            
+        }
+
         private void OnEnable()
         {
-            _button.onClick.AddListener(Call);
+            GameMenuHelpButton.onClick.AddListener(HighlightCards);
+            
         }
 
         private void OnDisable()
         {
-            _button.onClick.RemoveListener(Call);
+            GameMenuHelpButton.onClick.RemoveListener(HighlightCards);
+            
         }
-
         #endregion
-        
+                      
 
         #region Methods
 
@@ -42,11 +59,11 @@ namespace Core
             HideUI.Invoke();
         }
 
-        private void Call()
+        private void HighlightCards()
         {
-            ScreenInterface.GetInstance().Execute(ScreenType.MainMenu);
+            _controller.CardDealerController.HighlightMatcheCards();
         }
-
+        
         #endregion
     }
 }

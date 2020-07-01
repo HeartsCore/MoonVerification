@@ -1,6 +1,4 @@
 ﻿using Core.Customs;
-using Moon.Asyncs;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -18,7 +16,6 @@ namespace Core
         [Header("Controllers dragNdrop Data")]
         [SerializeField] private CardShufflingController _cardShuffl;
 
-        private List<CardBehaviour> _flipedCards = new List<CardBehaviour>();
         #endregion
 
 
@@ -53,11 +50,7 @@ namespace Core
         {
             return _countFlipCardATime;
         }
-        public List<CardBehaviour> GetFlipedCards()
-        {
-            return _flipedCards;
-        }
-
+        
         public CardShufflingController GetCardShuffl()
         {
             return _cardShuffl;

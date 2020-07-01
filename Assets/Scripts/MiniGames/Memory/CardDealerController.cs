@@ -1,7 +1,6 @@
 ﻿using Core;
 using Core.Customs;
 using Moon.Asyncs;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +19,7 @@ public class CardDealerController : IInitialization
 
 
     #region Fields
-    public static Action<CardBehaviour> OnFlipedCard;
+    public static List<CardBehaviour> FlipedCards = new List<CardBehaviour>();
     public static List<Card> CardsPool = new List<Card>();
     #endregion
 
@@ -59,7 +58,7 @@ public class CardDealerController : IInitialization
         asyncChain.AddAction(Debug.Log, "Dealing started");
         IsDealing = true;
 
-        var movePosition = new Vector3(-numberOfPairs / 2f, 0.0f, 0f);
+        var movePosition = new Vector3(-1.0f, 0.0f, 0f);
         var moveOffset = Vector3.right * 0.8f;
         for (var i = 0; i < numberOfPairs * 2; i++)
         {
@@ -130,10 +129,10 @@ public class CardDealerController : IInitialization
     {
         if (_cardShuffl != null)
         {
-            if (!_difficultyController.Config.isShufflingCards)
+            if (!_difficultyController.Config.IsShufflingCards)
                 CardShufflingController.onErrorCard = null;
 
-            _cardShuffl.SetMaxErrors(_difficultyController.Config.maxCountErrors);
+            _cardShuffl.SetMaxErrors(_difficultyController.Config.MaxCountErrors);
             _cardShuffl.Cards = CardsPool;
         }
     }
@@ -151,7 +150,7 @@ public class CardDealerController : IInitialization
     private Texture2D GetImage(int index)
     {
         Texture2D image = null;
-        if (_difficultyController.Config.isCardWithoutPairs)
+        if (_difficultyController.Config.IsCardWithoutPairs)
             return images[UnityEngine.Random.Range(0, images.Length)];
 
         if (CardsPool.Count == 1 || index < CardsPool.Count / 2)

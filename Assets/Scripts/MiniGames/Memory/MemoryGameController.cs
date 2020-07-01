@@ -10,17 +10,19 @@ namespace MiniGames.Memory
     {
         #region PrivateData
         private readonly IInitialization[] _allControllers;
+        private Canvas _mainCanvas;
         private Controllers _controllers;
+        private GameMenuBehaviour _gameMenu;
+        private Button _helpButton;
+        private TutorialHandBehaviour _tutorialHand;
 
-        private CardDealerController _cardDealerController;
         #endregion
 
 
         #region Fields
         [HideInInspector] public CameraAnimationController CameraAnimationController;
-
-        public DifficultyController _difficultyController;
-        public Button helpButton;
+        public CardDealerController CardDealerController;
+        public DifficultyController DifficultyController;
         #endregion
 
 
@@ -29,8 +31,13 @@ namespace MiniGames.Memory
         {
             _controllers = new Controllers();
             Initialization();
-            _cardDealerController = (CardDealerController)_controllers._initializations[0];
-            _difficultyController = (DifficultyController)_controllers._initializations[1];
+            ScreenInterface.GetInstance().Execute(ScreenType.GameMenu);
+            _mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
+            _gameMenu = _mainCanvas.GetComponentInChildren<GameMenuBehaviour>();
+            _helpButton = _gameMenu.GameMenuHelpButton;
+            _tutorialHand = _mainCanvas.GetComponentInChildren<TutorialHandBehaviour>();
+            CardDealerController = (CardDealerController)_controllers._initializations[0];
+            DifficultyController = (DifficultyController)_controllers._initializations[1];
             CameraAnimationController = GetComponentInChildren<CameraAnimationController>();
         }
         #endregion
@@ -41,17 +48,17 @@ namespace MiniGames.Memory
         {
             // game login entry point
             return Planner.Chain()
-                    .AddAction(_cardDealerController.SetImages, gameModel.images)
-                    .AddAction(_cardDealerController.SetDifficultyController, _difficultyController)
-
-                    .AddFunc(_cardDealerController.CardDealing, gameModel.numberOfCardPairs)
+                    .AddAction(CardDealerController.SetImages, gameModel.images)
+                    .AddAction(CardDealerController.SetDifficultyController, DifficultyController)
+                    .AddFunc(CardDealerController.CardDealing, gameModel.numberOfCardPairs)
+                    .AddFunc(_tutorialHand.StartTutorial)
                     .AddAction(() =>
                     {
                         if (gameModel.HelpCount != 0)
                         {
-                            helpButton.gameObject.SetActive(true);
-                            _cardDealerController.MaxHelpCount = gameModel.HelpCount;
-                            _cardDealerController.HelpButton = helpButton;
+                            _helpButton.gameObject.SetActive(true);
+                            CardDealerController.MaxHelpCount = gameModel.HelpCount;
+                            CardDealerController.HelpButton = _helpButton;
                         }
                     })
                     .AddAwait(AwaitFunc)
@@ -80,7 +87,7 @@ namespace MiniGames.Memory
         }
         private DifficultyController DifficultyControllerForAsync()
         {
-            return _difficultyController;
+            return DifficultyController;
         }
         #endregion
     }

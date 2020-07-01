@@ -2,13 +2,13 @@
 using Core.Customs;
 using Moon.Asyncs;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 public class DifficultyController : IInitialization
 {
     #region PrivateData
     private readonly DifficultyData _difficultyData;
-    private readonly HPManager _hpManager;
+    //private readonly HPManagerBehavior _hpManager;
     #endregion
 
 
@@ -22,7 +22,8 @@ public class DifficultyController : IInitialization
     {
         CustomDebug.Log("Initialize DifficultyController");
         _difficultyData = Data.Instance.DifficultyData;
-        _hpManager = _difficultyData.HPManager;
+        //_hpManager =  GameObject.FindGameObjectWithTag("MainCanvas").GetComponentInChildren<HPManagerBehavior>();
+
     }
     #endregion
 
@@ -31,7 +32,7 @@ public class DifficultyController : IInitialization
     public AsyncState ShowCardsInBeginning(List<Card> cardsPool)
     {
         var asyncChain = Planner.Chain();
-        if (!_difficultyData.isShowCardInBeginningRound)
+        if (!_difficultyData.IsShowCardInBeginningRound)
             return asyncChain.AddEmpty();
 
         foreach (var cardP in cardsPool)
@@ -44,7 +45,7 @@ public class DifficultyController : IInitialization
         }
 
         asyncChain.AddAction(CustomDebug.Log, "Show");
-        asyncChain.AddTimeout(_difficultyData.showTime);
+        asyncChain.AddTimeout(_difficultyData.ShowTime);
         asyncChain.AddAction(CustomDebug.Log, "Close");
         foreach (var cardP in cardsPool)
         {
@@ -57,15 +58,15 @@ public class DifficultyController : IInitialization
         return asyncChain;
     }
 
-    public AsyncState HandleHP()
-    {
-        var asyncChain = Planner.Chain();
-        if (!_difficultyData.isHPHandle)
-            return asyncChain.AddEmpty();
+    //public AsyncState HandleHP()
+    //{
+    //    var asyncChain = Planner.Chain();
+    //    if (!_difficultyData.IsHPHandle)
+    //        return asyncChain.AddEmpty();
 
-        asyncChain.AddFunc(_hpManager.Execute, _difficultyData.hpPrefab, _difficultyData.maxHP);
-        return asyncChain;
-    }
+    //    asyncChain.AddFunc(_hpManager.Execute, _difficultyData.HpPrefab, _difficultyData.MaxHP);
+    //    return asyncChain;
+    //}
     #endregion
 
 

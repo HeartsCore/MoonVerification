@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad023d8cd59b6549acfe2f72eff1771, type: 3}
   m_Name: DifficultyData
   m_EditorClassIdentifier: 
-  isShowCardInBeginningRound: 1
-  showTime: 1
-  isShufflingCards: 1
-  maxCountErrors: 1
-  isCardWithoutPairs: 1
-  HPManager: {fileID: 6858982670092283928, guid: 95469b9b00e4f38499b55139a26cf468,
+  IsShowCardInBeginningRound: 1
+  ShowTime: 1
+  IsShufflingCards: 1
+  MaxCountErrors: 1
+  IsCardWithoutPairs: 1
+  HPManager: {fileID: 7442850627365733106, guid: 89b74cd281105f148bb47b700e6cbd37,
     type: 3}
-  isHPHandle: 1
-  maxHP: 3
-  hpPrefab: {fileID: 6780829407205423473, guid: 48adfd6fc4b3a9f4db718c6469a254bf,
+  IsHPHandle: 1
+  MaxHP: 3
+  HpPrefab: {fileID: 6780829407205423473, guid: 48adfd6fc4b3a9f4db718c6469a254bf,
     type: 3}
